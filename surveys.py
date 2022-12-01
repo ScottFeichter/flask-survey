@@ -13,6 +13,7 @@ class Question:
 
         # should question be prompt?
         # how do we play in ipython3 (mem address)
+        # can you debug the templates?
 
         self.prompt = prompt
         self.choices = choices

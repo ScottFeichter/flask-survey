@@ -14,12 +14,12 @@ RESPONSES = []
 def start_survey():
 
     return render_template(
-        "survey_start.html", 
-        title=survey.title, 
+        "survey_start.html",
+        title=survey.title,
         instructions=survey.instructions
     )
 
-@app.get("/questions/<question_number>")
+@app.get("/questions/<int:question_number>")
 def get_question(question_number):
 
     # grab question_number
