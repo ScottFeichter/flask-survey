@@ -1,3 +1,5 @@
+# Question("Have you shopped here before?")
+
 class Question:
     """Question on a questionnaire."""
 
@@ -8,6 +10,9 @@ class Question:
         choices = iterable, like ["Yes", "No", "Maybe"]
         allow_text = T/F to control free-form textual explanation
         """
+
+        # should question be prompt?
+        # how do we play in ipython3 (mem address)
 
         self.prompt = prompt
         self.choices = choices
@@ -24,10 +29,13 @@ class Survey:
         question = list of Question instances: [q1, q2, ...]
         """
 
+
         self.title = title
         self.instructions = instructions
         self.questions = questions
 
+    def __repr__(self):
+        return f"<Survey  title={self.title} instructions={self.instructions} questions={self.questions}>"
 
 satisfaction_survey = Survey(
     "Customer Satisfaction Survey",
