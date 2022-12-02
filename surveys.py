@@ -6,18 +6,19 @@ class Question:
     def __init__(self, prompt, choices=('Yes', 'No'), allow_text=False):
         """Create question (assume Yes/No for choices).
 
-        question = question text
+        prompt = prompt text
         choices = iterable, like ["Yes", "No", "Maybe"]
         allow_text = T/F to control free-form textual explanation
         """
+        
+        self.prompt = prompt
+        self.choices = choices
+        self.allow_text = allow_text
 
         # should question be prompt?
         # how do we play in ipython3 (mem address)
         # can you debug the templates?
 
-        self.prompt = prompt
-        self.choices = choices
-        self.allow_text = allow_text
 
 
 class Survey:
