@@ -8,13 +8,15 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 # debug = DebugToolbarExtension(app)
 
-RESPONSES = [] # ['Yes', 'No', 'Less than $10,000', 'Yes']
+# RESPONSES = [] # ['Yes', 'No', 'Less than $10,000', 'Yes']
 
 @app.get("/")
 def start_survey():
     """create begin survey page with title and instructions"""
 
-    RESPONSES = []
+    # RESPONSES = []
+
+    session["RESPONSES"] = []
 
     return render_template(
         "survey_start.html",
@@ -32,7 +34,16 @@ def get_question_zero():
 def get_question(question_number):
     """get new question, based on value passed in url"""
 
+    seshLen = len(session["RESPONSES"])
+
+    if seshLen != question_number:
+        question_number = seshLen
+        flash("Hey you dollard stop peaking!")
+
+
+
     question = survey.questions[question_number]
+
 
     return render_template("question.html", question=question)
 
@@ -40,21 +51,26 @@ def get_question(question_number):
 def receive_answer():
     """handle answer submission - add to responses and render next question"""
 
-    answer = request.form.get("answer")
-    RESPONSES.append(answer)
+    responses = session["RESPONSES"]
 
-    if len(RESPONSES) >= len(survey.questions):
+
+    answer = request.form.get("answer")
+    responses.append(answer)
+
+    session["RESPONSES"] = responses
+
+    if len(session["RESPONSES"]) >= len(survey.questions):
         return redirect("/completion")
 
-    return redirect(f"/questions/{len(RESPONSES)}")
+    return redirect(f"/questions/{len(session['RESPONSES'])}")
 
 @app.get("/completion")
 def show_end_page():
     """show end page of the survey, with summary"""
 
     return render_template(
-        "completion.html", 
-        questions=survey.questions, 
-        survey_responses=RESPONSES, 
+        "completion.html",
+        questions=survey.questions,
+        survey_responses=session["RESPONSES"],
         length=range(len(survey.questions))
     )
