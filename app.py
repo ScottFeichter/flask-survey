@@ -35,10 +35,12 @@ def get_question(question_number):
 
 @app.post("/answer")
 def receive_answer():
-    answer = request.form.to_dict()
+    answer = request.form.get("answer")
     RESPONSES.append(answer)
 
-    breakpoint()
+    if len(RESPONSES) >= len(survey.questions):
+        return render_template("completion.html", questions=survey.questions, survey_responses=RESPONSES, length=range(len(survey.questions)))
 
-    return redirect()
+
+    return redirect(f"/questions/{len(RESPONSES)}")
 
