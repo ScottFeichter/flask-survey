@@ -8,10 +8,12 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
 
-RESPONSES = []
+RESPONSES = [] # ['Yes', 'No', 'Less than $10,000', 'Yes']
 
 @app.get("/")
 def start_survey():
+
+    RESPONSES = []
 
     return render_template(
         "survey_start.html",
@@ -19,17 +21,24 @@ def start_survey():
         instructions=survey.instructions
     )
 
+@app.post("/begin")
+def get_question_zero():
+
+    return redirect("/questions/0")
+
 @app.get("/questions/<int:question_number>")
 def get_question(question_number):
-
-    # grab question_number
-    # access that question from the survey object
-    # access the choices from the survey object
-    # return a template, passing the question and options to it
-
-    # prompt = survey.questions[question_number].prompt
-    # choices = survey.questions[question_number].choices
 
     question = survey.questions[question_number]
 
     return render_template("question.html", question=question)
+
+@app.post("/answer")
+def receive_answer():
+    answer = request.form.to_dict()
+    RESPONSES.append(answer)
+
+    breakpoint()
+
+    return redirect()
+
